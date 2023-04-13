@@ -60,7 +60,9 @@ Testing
 Punchy will be an umbrella project. This will allow me to separate the business
 logic, customer app, and operator app
 
-## Customer App
+### Customer App
+
+Phoenix app
 
 For the app, I'm going to stick with React Native because I've been using that
 for projects recently, and I can quickly build an app with it.
@@ -74,7 +76,9 @@ this would normally require credentials and authentication.
 Since the user probably isn't in San Francisco, the user's position will be
 faked.
 
-## Operator App
+### Operator App
+
+Phoenix app
 
 I want the core features to be complete, so I want the entire card-punch flow
 to actually work. I also want it to be easy for one person to set up, so I want
@@ -85,7 +89,13 @@ actually scan the QR code.
 I'm going to try using ngrok to allow the Food Truck App to be served from
 localhost yet still accessible on another device via the internet.
 
-## Punchy API
+### Punchy API
+
+Mix app
+
+Ecto for persistence
+
+([Plug.BasicAuth](https://github.com/elixir-plug/plug)) for Authentication 
 
 Resources:
 
