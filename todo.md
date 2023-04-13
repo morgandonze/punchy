@@ -17,14 +17,19 @@
 
 - [ ] Endpoints
   - [ ] Get active Operations near location
-  - [ ] Punch card
+  - [ ] Punch PunchCard
 
 ## Customer App
 
+- [ ] PunchCard list screen
+  - [ ] Call get active Operations near locations endpoint to populate list
+  - [ ] Display QR code to send `punch_card_id` indicating which PunchCard to punch
+
 ## Operator App
 
+- [ ] Main screen
+  - [ ] QR code scanner display
+  - [ ] Short instructions to scan QR code on customer's app
+  - [ ] When code is scanned, use `Punch PunchCard` endpoint with `punch_card_id`
 
-Key deps:
-https://github.com/elixir-plug/plug_cowboy (webserver utils)
-https://github.com/michalmuskala/jason (json parsing)
-(can check these links to see most recent stable versions)
+
