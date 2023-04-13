@@ -99,17 +99,27 @@ Ecto for persistence
 
 Resources:
 
-`users`
+`Users`
 id: ID
 
-`trucks`
+has one Truck
+has many PunchCards
+
+`Trucks`
 id: ID
 name: string (Applicant in dataset)
 card_punches_needed: integer
 card_image: text (link to image on CDN, ideally)
 card_completion_reward: text
 
-`locations`
+belongs to User
+has many PunchCards
+has many Operations
+
+`Operations`
+
+(A time window in which a Truck will be operating)
+
 truckId: references:trucks
 dayOfWeek: string
 startTime: datetime
@@ -118,7 +128,12 @@ latitude: string (WGS84)
 longitude: string (WGS84)
 menu: text (optionaltext in the dataset)
 
-`user_punch_cards`
+belongs to Truck
+
+`PunchCards`
 user_id: ID
 truck_id: ID
 num_punches: integer
+
+belongs to User
+belongs to Truck
