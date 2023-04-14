@@ -9,10 +9,5 @@
 # move said applications out of the umbrella.
 import Config
 
-# Sample configuration:
-#
-#     config :logger, :console,
-#       level: :info,
-#       format: "$date $time [$level] $metadata$message\n",
-#       metadata: [:user_id]
-#
+config :punchy_api, ecto_repos: [PunchyApi.Repo]
+import_config "#{Mix.env}.exs"

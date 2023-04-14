@@ -8,6 +8,7 @@ defmodule PunchyApi.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      PunchyApi.Repo
       # Starts a worker by calling: PunchyApi.Worker.start_link(arg)
       # {PunchyApi.Worker, arg}
     ]
