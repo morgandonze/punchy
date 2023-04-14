@@ -3,7 +3,7 @@
 
 ## General
 
-- [ ] Create Punchy API
+- [x] Create Punchy API
 - [ ] Create Customer App
 - [ ] Create Operator App
 
@@ -13,11 +13,13 @@
 
 ## Punchy API
 
+- [x] Add Ecto Repo
+
 - [ ] Create models
-  - [ ] Users
-  - [ ] Trucks
-  - [ ] Locations
-  - [ ] UserPunchCards
+  - [x] Users
+  - [x] Trucks
+  - [x] Operations
+  - [x] UserPunchCards
 
 - [ ] Endpoints
   - [ ] Get active Operations near location

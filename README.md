@@ -45,6 +45,9 @@ https://data.sfgov.org/api/views/rqzj-sfat/rows.csv
 
 database port: 5432
 
+[ngrok](https://ngrok.com/)
+[Plug](https://github.com/elixir-plug/plug) (for Plug.BasicAuth)
+
 ## Production Readiness
 
 This is a requirement of the project. In what ways will I make Punchy
@@ -101,6 +104,7 @@ Resources:
 
 `Users`
 id: ID
+username: string
 
 has one Truck
 has many PunchCards
@@ -146,3 +150,4 @@ I have already created the umbrella project.
 
 Next, to create Punchy API using `mix new punchy_api`
 
+Added Repo to Punchy API with postgrex and ecto_sql.
