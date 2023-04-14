@@ -137,3 +137,12 @@ num_punches: integer
 
 belongs to User
 belongs to Truck
+
+# Working Notes
+
+(@ 34b5afa Add todo list)
+
+I have already created the umbrella project.
+
+Next, to create Punchy API using `mix new punchy_api`
+
