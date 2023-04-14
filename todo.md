@@ -7,6 +7,10 @@
 - [ ] Create Customer App
 - [ ] Create Operator App
 
+## Deployment
+
+- [ ] Answer question: How would you actually deploy this to production?
+
 ## Punchy API
 
 - [ ] Create models
