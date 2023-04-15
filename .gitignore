@@ -24,3 +24,4 @@ erl_crash.dump
 
 .DS_Store
 settings.json
+apps/punchy_api/priv/truck_data.csv
