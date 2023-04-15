@@ -84,6 +84,9 @@ defmodule RowProcessor do
             [nil, nil] ->
               nil
 
+            [truck, _] ->
+              truck
+
             [nil, truck_owner] ->
               case Truck.create_truck(%{
                      name: truck_name,
@@ -98,8 +101,6 @@ defmodule RowProcessor do
                 _ ->
                   nil
               end
-            [truck, _] ->
-              truck
           end
 
         IO.inspect("TRUCK")
@@ -122,7 +123,6 @@ defmodule RowProcessor do
       e ->
         IO.inspect("ABORTED")
         IO.inspect(e)
-        # IO.inspect(data)
     end
   end
 end
