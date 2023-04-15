@@ -1,17 +1,19 @@
 defmodule PunchyApi do
   import Ecto.Query
-  alias Postgrex.Query
-  alias PunchyApi.{Operation, Repo}
+  # alias Postgrex.Query
+  # alias PunchyApi.Operation
+  alias PunchyApi.Repo
 
   def get_nearby_operations(latitude, longitude, radius \\ 0.25, _datetime \\ nil) do
-    nearby_radius_in_miles = radius
+    # 25_000 is the circumference of Earth in miles
+    # 360 degrees on the globe
     approx_miles_per_degree = 25_000 / 360
     mile_in_degrees = 1 / approx_miles_per_degree
 
-    min_lat = latitude - nearby_radius_in_miles * mile_in_degrees
-    max_lat = latitude + nearby_radius_in_miles * mile_in_degrees
-    min_long = longitude - nearby_radius_in_miles * mile_in_degrees
-    max_long = longitude + nearby_radius_in_miles * mile_in_degrees
+    min_lat = latitude - radius * mile_in_degrees
+    max_lat = latitude + radius * mile_in_degrees
+    min_long = longitude - radius * mile_in_degrees
+    max_long = longitude + radius * mile_in_degrees
 
     # Use min/max lat/long in query to select nearby Operations
     query =
@@ -25,11 +27,7 @@ defmodule PunchyApi do
             o.longitude <= type(^max_long, :float)
       )
 
-    IO.inspect(query)
-
     Repo.all(query)
-    |> Enum.count()
 
-    # |> Enum.
   end
 end
