@@ -82,12 +82,11 @@ defmodule RowProcessor do
         truck =
           case [Repo.get_by(Truck, name: truck_name), truck_owner] do
             [nil, nil] ->
+              IO.inspect("TRUCK 1")
               nil
 
-            [truck, _] ->
-              truck
-
             [nil, truck_owner] ->
+              IO.inspect("TRUCK 3")
               case Truck.create_truck(%{
                      name: truck_name,
                      card_punches: 5,
@@ -101,6 +100,12 @@ defmodule RowProcessor do
                 _ ->
                   nil
               end
+
+            [truck, _] ->
+              IO.inspect("TRUCK 2")
+              IO.inspect(truck)
+              truck
+
           end
 
         IO.inspect("TRUCK")
