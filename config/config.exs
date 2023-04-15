@@ -10,4 +10,7 @@
 import Config
 
 config :punchy_api, ecto_repos: [PunchyApi.Repo]
-import_config "#{Mix.env}.exs"
+
+config :punchy_api, :data, truck_data_url: "https://data.sfgov.org/api/views/rqzj-sfat/rows.csv"
+
+import_config "#{Mix.env()}.exs"

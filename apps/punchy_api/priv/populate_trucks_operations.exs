@@ -1,5 +1,7 @@
 NimbleCSV.define(CSVParser, separator: ",", escape: "\"")
 
+alias PunchyApi.{User, Truck, Repo}
+
 [truck_data_url: _truck_data_url] = Application.get_env(:punchy_api, :data)
 {:ok, cwd} = File.cwd()
 truck_data_save_path = cwd <> "/priv/truck_data.csv"
@@ -27,10 +29,6 @@ defmodule RowProcessor do
       Enum.member?(keep_cols, index)
     end
 
-    find_key = fn {index, data_map_index, _key} ->
-      data_map_index == index
-    end
-
     set_attr = fn {index, value}, acc ->
       {_data_map_index, key} =
         Enum.find(data_map, fn {data_map_index, _key} ->
@@ -45,6 +43,34 @@ defmodule RowProcessor do
     |> Enum.filter(keep_col?)
     |> Enum.reduce(%{}, set_attr)
   end
+
+  def create_from_dataset(data) do
+    %{
+      truck_name: truck_name,
+      food_items: food_items
+    } = data
+
+    Repo.transaction(fn ->
+      with {:ok, user} <-
+             %User{}
+             |> User.changeset(%{
+               username: "#{truck_name} Owner"
+             })
+             |> Repo.insert() do
+        %Truck{}
+        |> Truck.changeset(%{
+          name: truck_name,
+          card_punches: 5,
+          card_reward: "Free drink!",
+          food_items: food_items,
+          user_id: user.id
+        })
+        |> Repo.insert()
+      end
+    end)
+
+    # create User to own the Truck
+  end
 end
 
 # case Download.from(truck_data_url, [path: truck_data_save_path]) do
@@ -54,8 +80,10 @@ case {:ok, truck_data_save_path} do
     |> File.stream!()
     |> CSVParser.parse_stream()
     |> Stream.map(&RowProcessor.process_row/1)
-    |> Enum.take(1)
-    |> IO.inspect()
+    |> Stream.each(&RowProcessor.create_from_dataset/1)
+    |> Stream.run()
+
+  # |> create_operation
 
   {:error, reason} ->
     IO.inspect("Downloading Truck data failed. :#{reason}")

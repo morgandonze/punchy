@@ -170,3 +170,5 @@ is about 69.4 miles.
 
 I want to populate the Operations now. I'll use
 [NimbleCSV](https://hexdocs.pm/nimble_csv/NimbleCSV.html) to parse the CSV file.
+
+I added this url to PunchyAPI's config.

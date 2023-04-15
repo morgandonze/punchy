@@ -6,6 +6,7 @@ defmodule PunchyApi.Repo.Migrations.CreateTrucks do
       add :name, :string
       add :card_punches, :integer
       add :card_reward, :string
+      add :food_items, :text
       add :user_id, references(:users) # Not deleting trucks when User deleted
 
       timestamps()
