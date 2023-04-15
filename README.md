@@ -172,3 +172,10 @@ I want to populate the Operations now. I'll use
 [NimbleCSV](https://hexdocs.pm/nimble_csv/NimbleCSV.html) to parse the CSV file.
 
 I added this url to PunchyAPI's config.
+
+Population script is complete.
+
+Working on get_nearby_operations.
+
+Example usage:
+`PunchyApi.get_nearby_operations(37.794, -122.395)`

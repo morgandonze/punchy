@@ -12,8 +12,8 @@
 ## Setup & Deployment
 
 - [ ] Answer question: How would you actually deploy this to production?
-- [ ] Seeds file
-  - [ ] Create a food truck owner user
+- [X] Seeds file
+  - [X] Create food truck owner users
 
 ## Punchy API
 
@@ -27,11 +27,13 @@
 
 - [ ] Populate list of Operations
   `apps/punchy_api/priv/populate_trucks_operations.exs`
-  - [ ] Create Operation for each row
-  - [ ] Create new Truck for Operation when needed
+  - [X] Create Operation for each row
+  - [X] Create new Truck for Operation when needed
+  - [X] Create new User for Truck when needed
 
 - [X] Core Business Methods
-  - [ ] Get active Operations near location
+  - [X] Get active Operations near location
+    - [ ] Group by truck_id
   - [ ] Punch PunchCard
 
 ## PunchyWeb (Customer App)
