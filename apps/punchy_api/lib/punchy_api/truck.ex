@@ -1,7 +1,6 @@
 defmodule PunchyApi.Truck do
   import Ecto.Changeset
-  alias Hex.API.User
-  alias PunchyApi.{Truck, Repo, User}
+  alias PunchyApi.{Truck, Repo}
 
   use Ecto.Schema
 
@@ -15,11 +14,16 @@ defmodule PunchyApi.Truck do
     timestamps()
   end
 
-  def changeset(%Truck{} = user, attrs) do
-    user
+  def changeset(%Truck{} = truck, attrs) do
+    truck
     |> cast(attrs, [:name, :card_punches, :card_reward, :food_items, :user_id])
     |> validate_required([:name, :card_punches, :card_reward, :user_id])
     |> unique_constraint(:name)
   end
 
+  def create_truck(attrs \\ %{}) do
+    %Truck{}
+    |> Truck.changeset(attrs)
+    |> Repo.insert()
+  end
 end

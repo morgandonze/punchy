@@ -1,6 +1,6 @@
 NimbleCSV.define(CSVParser, separator: ",", escape: "\"")
 
-alias PunchyApi.{User, Truck, Repo}
+alias PunchyApi.{User, Truck, Operation, Repo}
 
 [truck_data_url: _truck_data_url] = Application.get_env(:punchy_api, :data)
 {:ok, cwd} = File.cwd()
@@ -9,6 +9,7 @@ truck_data_save_path = cwd <> "/priv/truck_data.csv"
 defmodule RowProcessor do
   def process_row(row) do
     data_map = [
+      {0, :location_id},
       {1, :truck_name},
       {2, :facility_type},
       {4, :location_description},
@@ -45,31 +46,88 @@ defmodule RowProcessor do
   end
 
   def create_from_dataset(data) do
-    %{
-      truck_name: truck_name,
-      food_items: food_items
-    } = data
+    try do
+      %{
+        truck_name: truck_name,
+        food_items: food_items,
+        location_id: location_id,
+        latitude: latitude,
+        longitude: longitude
+      } = data
 
-    Repo.transaction(fn ->
-      with {:ok, user} <-
-             %User{}
-             |> User.changeset(%{
-               username: "#{truck_name} Owner"
-             })
-             |> Repo.insert() do
-        %Truck{}
-        |> Truck.changeset(%{
-          name: truck_name,
-          card_punches: 5,
-          card_reward: "Free drink!",
-          food_items: food_items,
-          user_id: user.id
-        })
-        |> Repo.insert()
-      end
-    end)
+      username = "#{truck_name} Owner"
 
-    # create User to own the Truck
+      IO.inspect("DATA")
+      IO.inspect(data)
+
+      Repo.transaction(fn ->
+        truck_owner =
+          case Repo.get_by(User, username: username) do
+            nil ->
+              IO.inspect("Get truck owner res: ")
+              IO.inspect(get_truck_owner_res)
+
+              created_truck_owner =
+                case User.create_user(%{username: username}) do
+                  {:ok, user} -> user
+                  _ -> nil
+                end
+
+              IO.inspect("Create user:")
+              IO.inspect(created_truck_owner)
+              created_truck_owner
+
+            user ->
+              user
+          end
+
+        IO.inspect("TRUCK OWNER")
+        IO.inspect(truck_owner)
+
+        truck =
+          case [Repo.get_by(Truck, name: truck_name), truck_owner] do
+            [_, nil] ->
+              IO.inspect("NO TRUCK OWNER!")
+              nil
+
+            [{:ok, found_truck}, _] ->
+              IO.inspect("IS TRUCK OWNER!")
+              found_truck
+
+            _ ->
+              case Truck.create_truck(%{
+                     name: truck_name,
+                     card_punches: 5,
+                     card_reward: "Free drink!",
+                     food_items: food_items,
+                     user_id: truck_owner.id
+                   }) do
+                {:ok, truck} -> truck
+                _ -> nil
+              end
+          end
+
+        IO.inspect("TRUCK")
+        IO.inspect(truck)
+
+        case truck do
+          nil ->
+            nil
+
+          _ ->
+            Operation.create_operation(%{
+              location_id: location_id,
+              latitude: latitude,
+              longitude: longitude,
+              truck_id: truck.id
+            })
+        end
+      end)
+    rescue
+      _ ->
+        IO.inspect("ABORTED")
+        IO.inspect(data)
+    end
   end
 end
 

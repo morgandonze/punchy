@@ -1,12 +1,11 @@
 defmodule PunchyApi.User do
-  # defstruct [:username, :id, :inserted_at, :updated_at]
   import Ecto.Changeset
   alias PunchyApi.{User, Repo}
 
   use Ecto.Schema
 
   schema "users" do
-    field :username, :string
+    field(:username, :string)
 
     timestamps()
   end
@@ -20,8 +19,10 @@ defmodule PunchyApi.User do
   end
 
   def create_user(attrs \\ %{}) do
+    IO.inspect("CREATE USER")
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
+    |> IO.inspect()
   end
 end
