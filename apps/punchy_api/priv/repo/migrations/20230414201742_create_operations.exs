@@ -7,8 +7,8 @@ defmodule PunchyApi.Repo.Migrations.CreateOperations do
       add :dayOfWeek, :string
       add :startTime, :utc_datetime
       add :endTime, :utc_datetime
-      add :latitude, :string
-      add :longitude, :string
+      add :latitude, :float
+      add :longitude, :float
       add :menu, :text
       add :truck_id, references(:trucks)
 
