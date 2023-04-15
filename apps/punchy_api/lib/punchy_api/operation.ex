@@ -9,8 +9,8 @@ defmodule PunchyApi.Operation do
     field(:day_of_week, :string)
     field(:startTime, :utc_datetime)
     field(:endTime, :utc_datetime)
-    field(:latitude, :string)
-    field(:longitude, :string)
+    field(:latitude, :float)
+    field(:longitude, :float)
     belongs_to(:truck, PunchyApi.Truck)
 
     timestamps()

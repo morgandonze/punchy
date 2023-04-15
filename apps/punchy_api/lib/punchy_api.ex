@@ -1,22 +1,10 @@
 defmodule PunchyApi do
-  @moduledoc """
-  Documentation for `PunchyApi`.
-  """
-  alias PunchyApi.Location
+  import Ecto.Query
+  alias Postgrex.Query
+  alias PunchyApi.{Operation, Repo}
 
-  @doc """
-
-  Gets operations near the time and place specified by the params.
-
-  ## Params
-
-  - latitude
-  - longitude
-  - datetime
-
-  """
-  def get_nearby_operations(latitude, longitude, datetime) do
-    nearby_radius_in_miles = 2
+  def get_nearby_operations(latitude, longitude, radius \\ 0.25, _datetime \\ nil) do
+    nearby_radius_in_miles = radius
     approx_miles_per_degree = 25_000 / 360
     mile_in_degrees = 1 / approx_miles_per_degree
 
@@ -26,6 +14,22 @@ defmodule PunchyApi do
     max_long = longitude + nearby_radius_in_miles * mile_in_degrees
 
     # Use min/max lat/long in query to select nearby Operations
+    query =
+      from(
+        o in "operations",
+        select: [:latitude, :longitude, :truck_id],
+        where:
+          o.latitude >= type(^min_lat, :float) and
+            o.latitude <= type(^max_lat, :float) and
+            o.longitude >= type(^min_long, :float) and
+            o.longitude <= type(^max_long, :float)
+      )
 
+    IO.inspect(query)
+
+    Repo.all(query)
+    |> Enum.count()
+
+    # |> Enum.
   end
 end
