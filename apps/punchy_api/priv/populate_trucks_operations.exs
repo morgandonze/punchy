@@ -34,7 +34,11 @@ case {:ok, truck_data_save_path} do
       end
 
       set_attr = fn {index, value}, acc ->
-        {_data_map_index, key} = Enum.find(index, data_map, find_key)
+        {_data_map_index, key} =
+          Enum.find(data_map, fn {data_map_index, _key} ->
+            data_map_index == index
+          end)
+
         Map.put(acc, key, value)
       end
 
