@@ -40,6 +40,9 @@ Observe that the Customer received a new punch
 
 ## Info and Config
 
+Food Truck API:
+https://data.sfgov.org/Economy-and-Community/Mobile-Food-Facility-Permit/rqzj-sfat/data
+
 Food Truck latest data CSV url:
 https://data.sfgov.org/api/views/rqzj-sfat/rows.csv
 
@@ -151,3 +154,19 @@ I have already created the umbrella project.
 Next, to create Punchy API using `mix new punchy_api`
 
 Added Repo to Punchy API with postgrex and ecto_sql.
+
+Added models (Users, Trucks, etc)
+
+Creating User module
+
+Add changeset function on User module
+
+PunchyAPI method get_operations_near_place_time
+
+I'll use a simple rule for determining which locations are nearby. The
+circumference of the earth along the equator is about 25,000 miles, and there
+are 360 degrees in a circle. Dividing these, we see that one degree longitude
+is about 69.4 miles.
+
+I want to populate the Operations now. I'll use
+[NimbleCSV](https://hexdocs.pm/nimble_csv/NimbleCSV.html) to parse the CSV file.

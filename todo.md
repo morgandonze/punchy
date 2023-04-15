@@ -7,25 +7,30 @@
 - [ ] Create Customer App
 - [ ] Create Operator App
 
-## Deployment
+- [ ] Test that I can use PunchyAPI from PunchyWeb (custmer app)
+
+## Setup & Deployment
 
 - [ ] Answer question: How would you actually deploy this to production?
+- [ ] Seeds file
 
 ## Punchy API
 
 - [x] Add Ecto Repo
 
-- [ ] Create models
+- [x] Create models
   - [x] Users
   - [x] Trucks
   - [x] Operations
   - [x] UserPunchCards
 
-- [ ] Endpoints
+- [ ] Populate list of Operations
+
+- [X] Core Business Methods
   - [ ] Get active Operations near location
   - [ ] Punch PunchCard
 
-## Customer App
+## PunchyWeb (Customer App)
 
 - [ ] PunchCard list screen
   - [ ] Call get active Operations near locations endpoint to populate list
