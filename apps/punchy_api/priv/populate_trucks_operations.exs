@@ -64,17 +64,12 @@ defmodule RowProcessor do
         truck_owner =
           case Repo.get_by(User, username: username) do
             nil ->
-              IO.inspect("Get truck owner res: ")
-              IO.inspect(get_truck_owner_res)
-
               created_truck_owner =
                 case User.create_user(%{username: username}) do
                   {:ok, user} -> user
                   _ -> nil
                 end
 
-              IO.inspect("Create user:")
-              IO.inspect(created_truck_owner)
               created_truck_owner
 
             user ->
@@ -86,15 +81,10 @@ defmodule RowProcessor do
 
         truck =
           case [Repo.get_by(Truck, name: truck_name), truck_owner] do
-            [_, nil] ->
-              IO.inspect("NO TRUCK OWNER!")
+            [nil, nil] ->
               nil
 
-            [{:ok, found_truck}, _] ->
-              IO.inspect("IS TRUCK OWNER!")
-              found_truck
-
-            _ ->
+            [nil, truck_owner] ->
               case Truck.create_truck(%{
                      name: truck_name,
                      card_punches: 5,
@@ -102,8 +92,14 @@ defmodule RowProcessor do
                      food_items: food_items,
                      user_id: truck_owner.id
                    }) do
-                {:ok, truck} -> truck
-                _ -> nil
+                {:ok, truck} ->
+                  truck
+
+                _ ->
+                  nil
+
+                _ ->
+                  nil
               end
           end
 
@@ -114,7 +110,7 @@ defmodule RowProcessor do
           nil ->
             nil
 
-          _ ->
+          truck ->
             Operation.create_operation(%{
               location_id: location_id,
               latitude: latitude,
