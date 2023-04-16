@@ -1,4 +1,8 @@
 
+Doing:
+PunchyAPI
+  Get users punch cards method
+
 # Todo
 
 ## General
@@ -6,6 +10,7 @@
 - [x] Create Punchy API
 - [ ] Create Customer App
 - [ ] Create Operator App
+- [ ] Way to select a user (who's punch card to punch?)
 
 - [ ] Test that I can use PunchyAPI from PunchyWeb (custmer app)
 
@@ -34,6 +39,8 @@
 - [X] Core Business Methods
   - [X] Get active Operations near location
     - [ ] Group by truck_id
+      - [ ] Use an `IN [truck_ids]` SQL query to make one request for all the trucks
+  - [ ] Get users punch cards method
   - [ ] Punch PunchCard
 
 ## PunchyWeb (Customer App)

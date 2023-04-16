@@ -2,7 +2,9 @@ defmodule PunchyApi do
   import Ecto.Query
   # alias Postgrex.Query
   # alias PunchyApi.Operation
-  alias PunchyApi.Repo
+  alias PunchyApi.{Truck, Repo, PunchCard}
+
+  @current_user_id 1
 
   def get_nearby_operations(latitude, longitude, radius \\ 0.25, _datetime \\ nil) do
     # 25_000 is the circumference of Earth in miles
@@ -15,7 +17,6 @@ defmodule PunchyApi do
     min_long = longitude - radius * mile_in_degrees
     max_long = longitude + radius * mile_in_degrees
 
-    # Use min/max lat/long in query to select nearby Operations
     query =
       from(
         o in "operations",
@@ -28,6 +29,42 @@ defmodule PunchyApi do
       )
 
     Repo.all(query)
+  end
 
+  def get_nearby_trucks(latitude, longitude) do
+    get_nearby_truck_ids(latitude, longitude)
+    |> Enum.map(fn truck_id ->
+      Repo.get(PunchyApi.Truck, truck_id)
+    end)
+  end
+
+  def get_nearby_truck_ids(latitude, longitude) do
+    PunchyApi.get_nearby_operations(latitude, longitude)
+    |> Enum.group_by(& &1.truck_id)
+    |> Map.keys()
+  end
+
+  def punch_cards_for_nearby_trucks(latitude, longitude) do
+    get_nearby_truck_ids(latitude, longitude)
+    |> Enum.map(fn truck_id ->
+      Truck.new_punch_card(truck_id, @current_user_id)
+    end)
+  end
+
+  def punch_punch_card(truck_id, user_id) do
+    IO.inspect("PUNCH")
+    case Repo.get_by(PunchCard, truck_id: truck_id, user_id: user_id) do
+      nil ->
+        IO.inspect("NIL")
+        Truck.new_punch_card(truck_id, user_id)
+        |> PunchCard.punch()
+      punch_card ->
+        IO.inspect(punch_card)
+        PunchCard.punch(punch_card)
+    end
+  end
+
+  def users_punch_cards(user_id) do
+    :noop
   end
 end

@@ -6,6 +6,8 @@ defmodule PunchyApi.User do
 
   schema "users" do
     field(:username, :string)
+    has_many(:trucks, PunnchyApi.Truck, on_delete: :delete_all)
+    has_many(:punch_cards, PunnchyApi.PunchCard, on_delete: :delete_all)
 
     timestamps()
   end

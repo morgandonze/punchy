@@ -179,3 +179,4 @@ Working on get_nearby_operations.
 
 Example usage:
 `PunchyApi.get_nearby_operations(37.794, -122.395)`
+PunchyApi.punch_cards_for_nearby_trucks(37.794, -122.395)
