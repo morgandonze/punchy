@@ -57,10 +57,9 @@ defmodule RowProcessor do
 
       username = "#{truck_name} Owner"
 
-      IO.inspect("DATA")
-      IO.inspect(data)
-
       Repo.transaction(fn ->
+        IO.inspect("CREATE TRUCK OWNER")
+
         truck_owner =
           case Repo.get_by(User, username: username) do
             nil ->
@@ -101,7 +100,6 @@ defmodule RowProcessor do
 
             [truck, _] ->
               truck
-
           end
 
         IO.inspect("TRUCK")
