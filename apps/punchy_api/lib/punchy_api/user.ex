@@ -1,13 +1,13 @@
 defmodule PunchyApi.User do
   import Ecto.Changeset
-  alias PunchyApi.{User, Repo}
+  alias PunchyApi.{User, Truck, PunchCard, Repo}
 
   use Ecto.Schema
 
   schema "users" do
     field(:username, :string)
-    has_many(:trucks, PunnchyApi.Truck, on_delete: :delete_all)
-    has_many(:punch_cards, PunnchyApi.PunchCard, on_delete: :delete_all)
+    has_many(:trucks, PunchyApi.Truck, on_delete: :delete_all)
+    has_many(:punch_cards, PunchyApi.PunchCard, on_delete: :delete_all)
 
     timestamps()
   end
@@ -21,10 +21,8 @@ defmodule PunchyApi.User do
   end
 
   def create_user(attrs \\ %{}) do
-    IO.inspect("CREATE USER")
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
-    |> IO.inspect()
   end
 end

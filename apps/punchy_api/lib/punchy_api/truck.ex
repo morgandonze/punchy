@@ -10,7 +10,7 @@ defmodule PunchyApi.Truck do
     field(:card_reward, :string)
     field(:food_items, :string)
     belongs_to(:user, PunchyApi.User)
-    has_many(:punch_cards, PunnchyApi.PunchCard, on_delete: :delete_all)
+    has_many(:punch_cards, PunchyApi.PunchCard, on_delete: :delete_all)
 
     timestamps()
   end
