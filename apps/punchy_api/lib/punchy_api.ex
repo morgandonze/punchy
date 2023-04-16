@@ -52,15 +52,28 @@ defmodule PunchyApi do
   end
 
   def punch_punch_card(truck_id, user_id) do
-    IO.inspect("PUNCH")
-    case Repo.get_by(PunchCard, truck_id: truck_id, user_id: user_id) do
-      nil ->
-        IO.inspect("NIL")
-        Truck.new_punch_card(truck_id, user_id)
-        |> PunchCard.punch()
-      punch_card ->
+    punch_card =
+      case Repo.get_by(PunchCard, truck_id: truck_id, user_id: user_id) do
+        nil ->
+          Truck.new_punch_card(truck_id, user_id)
+
+        punch_card ->
+          punch_card
+      end
+
+    {state, updated_punch_card} = PunchCard.punch(punch_card)
+
+    case state do
+      :complete ->
+        state
+        # Repo.delete(updated_punch_card)
+
+      :punched ->
         IO.inspect(punch_card)
-        PunchCard.punch(punch_card)
+        IO.inspect(updated_punch_card)
+        punch_card
+        |> PunchCard.changeset(updated_punch_card)
+        # |> Repo.update()
     end
   end
 

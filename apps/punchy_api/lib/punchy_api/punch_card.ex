@@ -22,5 +22,15 @@ defmodule PunchyApi.PunchCard do
   end
 
   def punch(punch_card) do
+    if punch_card.punches_earned + 1 == punch_card.punch_spots do
+      {:complete, punch_card}
+    else
+      {
+        :punched,
+        %{
+          punches_earned: punch_card.punches_earned + 1
+        }
+      }
+    end
   end
 end
