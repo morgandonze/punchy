@@ -126,8 +126,7 @@ defmodule RowProcessor do
   end
 end
 
-# case Download.from(truck_data_url, [path: truck_data_save_path]) do
-case {:ok, truck_data_save_path} do
+case Download.from(truck_data_url, [path: truck_data_save_path]) do
   {:ok, path} ->
     path
     |> File.stream!()
