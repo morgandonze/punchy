@@ -1,20 +1,14 @@
-
-Doing:
-PunchyAPI
-  Get users punch cards method
-
 # Todo
 
 ## General
 
 - [x] Create Punchy API
-- [ ] Create Customer App
-- [ ] Create Operator App
 - [ ] Way to select a user (who's punch card to punch?)
-
+- [ ] Answer, why an umbrella project?
 - [ ] Test that I can use PunchyAPI from PunchyWeb (custmer app)
 
 ## Setup & Deployment
+- [ ] Describe docker setup
 
 - [ ] Answer question: How would you actually deploy this to production?
 - [X] Seeds file
@@ -38,22 +32,9 @@ PunchyAPI
 
 - [X] Core Business Methods
   - [X] Get active Operations near location
-    - [ ] Group by truck_id
+    - [X] Group by truck_id
       - [ ] Use an `IN [truck_ids]` SQL query to make one request for all the trucks
-  - [ ] Get users punch cards method
-  - [ ] Punch PunchCard
-
-## PunchyWeb (Customer App)
-
-- [ ] PunchCard list screen
-  - [ ] Call get active Operations near locations endpoint to populate list
-  - [ ] Display QR code to send `punch_card_id` indicating which PunchCard to punch
-
-## Operator App
-
-- [ ] Main screen
-  - [ ] QR code scanner display
-  - [ ] Short instructions to scan QR code on customer's app
-  - [ ] When code is scanned, use `Punch PunchCard` endpoint with `punch_card_id`
+  - [X] Get users punch cards method
+  - [X] Punch PunchCard method
 
 
