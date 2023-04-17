@@ -1,44 +1,76 @@
 
 # Punchy
 
-Punchy is a universal punch card for food trucks in San Francisco.
+## Description
 
-I wanted to go a step further than simply displaying the data on the map. I
-wanted there to be a way to interact with it, and I came up with punchcards.
+Punchy is a punch card app for food trucks in San Francisco.
 
-The main display will be the list of punch cards for all trucks that are nearby
-or for which the user has an existing card with punches.
+I wanted there to provide a way to interact with the data, and I came up with
+punchcards. The idea is that food trucks can offer punch cards to their
+customers on the app. The app uses the customer's location. When they are near
+a food truck, a punch card for that food truck is displayed. Each punch card
+bears a QR code that the food truck workers can scan to punch it.
 
-The API lists specific time windows for each permit and the location where the
-truck will be during that time window. I will use that data to determine
-whether the truck is close.
+The API lists locations where food truck will be. For some of the food trucks,
+it specifies when the truck will be there. I will use the location data to
+determine whether the truck is close. I won't use the time windows because very
+few food trucks have that information.
 
-When the user taps a card, it is displayed alone, along with a QR code used to
-punch the card. To punch a customer's card, the truck operator uses their
-version of the app to scan the QR code.
+I created the project as an umbrella app because I envisioned having separate
+apps for the business logic and the mobile app. The mobile app likely wouldn't
+be built with Elixir, and there wasn't enough time to build it either, so I only
+built an app for the business logic, `apps/punchy_api`.
 
-# Setup and usage
+In a real production situation, this would run alongside and be utilized by the
+other components.
 
-Setup:
-Clone umbrella project
-Spin up docker container
-Install deps
-Start apps
+```bash
+git clone https://github.com/morgandonze/punchy.git
+cd punchy && mix deps.get
+```
 
-Usage:
-Open Customer app on desktop
-View list of punch cards
-Click a punch card, revealing the QR code
+Enter postgres database username, password into `config/dev.exs`
 
-Open Operator app on mobile using link from ngrok
-Scan the QR code from the Customer App
+Run setup script to populate truck data.
+```
+cd apps/punchy_api
+mix run priv/populate_trucks_operations.exs
+```
 
-Observe that the Customer received a new punch
+This data come from the SF Food Truck dataset.
 
 
-# Planning
+## Usage
 
-## Info and Config
+### Functions
+
+The key features are three functions:
+
+* `PunchyApi.punch_cards_for_nearby_trucks(latitude, longitude)`: returns a
+list of punch card data structs for nearby trucks, whether the user has any
+punches or not.
+
+Example:
+`PunchyApi.punch_cards_for_nearby_trucks(37.794, -122.395)`
+
+* `PunchyApi.users_punch_cards(user_id)`: returns a list of punch cards for the user
+with one or more punches. (not implemented yet)
+
+* `PunchyApi.punch_punch_card(truck_id, user_id)`: Adds a punch to the punch
+card. Returns the updated punch card struct, or an empty array if the new punch
+completes the card. The food truck should then give the customer their reward.
+
+Example:
+`PunchyApi.punch_punch_card(106, 1)`
+
+### Testing
+
+Use IEx to try out these methods.
+
+`iex -S mix`
+
+
+# Dev Notes
 
 Food Truck API:
 https://data.sfgov.org/Economy-and-Community/Mobile-Food-Facility-Permit/rqzj-sfat/data
@@ -48,62 +80,7 @@ https://data.sfgov.org/api/views/rqzj-sfat/rows.csv
 
 database port: 5432
 
-[ngrok](https://ngrok.com/)
-[Plug](https://github.com/elixir-plug/plug) (for Plug.BasicAuth)
-
-## Production Readiness
-
-This is a requirement of the project. In what ways will I make Punchy
-production-ready?
-
-Authentication
-Completeness of MVP
-Presentable, if minimal
-Testing
-
-## Architecture
-
-Punchy will be an umbrella project. This will allow me to separate the business
-logic, customer app, and operator app
-
-### Customer App
-
-Phoenix app
-
-For the app, I'm going to stick with React Native because I've been using that
-for projects recently, and I can quickly build an app with it.
-
-Due to time constraints, I will simplify the food truck owner flow. There will
-be a single app with a toggle that allows users to switch between owner and
-customer. In owner mode, the user will also be able to act as the owner of any
-food truck they choose, by selecting it from a simple select input. Obviously,
-this would normally require credentials and authentication.
-
-Since the user probably isn't in San Francisco, the user's position will be
-faked.
-
-### Operator App
-
-Phoenix app
-
-I want the core features to be complete, so I want the entire card-punch flow
-to actually work. I also want it to be easy for one person to set up, so I want
-them to be able to use a local database, yet be able to access the Customer App
-from one device and the Truck Operator App from a mobile device, so that they can
-actually scan the QR code.
-
-I'm going to try using ngrok to allow the Food Truck App to be served from
-localhost yet still accessible on another device via the internet.
-
-### Punchy API
-
-Mix app
-
-Ecto for persistence
-
-([Plug.BasicAuth](https://github.com/elixir-plug/plug)) for Authentication 
-
-Resources:
+**Resources**
 
 `Users`
 id: ID
@@ -145,10 +122,6 @@ num_punches: integer
 belongs to User
 belongs to Truck
 
-# Working Notes
-
-(@ 34b5afa Add todo list)
-
 I have already created the umbrella project.
 
 Next, to create Punchy API using `mix new punchy_api`
@@ -176,7 +149,3 @@ I added this url to PunchyAPI's config.
 Population script is complete.
 
 Working on get_nearby_operations.
-
-Example usage:
-`PunchyApi.get_nearby_operations(37.794, -122.395)`
-PunchyApi.punch_cards_for_nearby_trucks(37.794, -122.395)
