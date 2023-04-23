@@ -2,7 +2,7 @@ NimbleCSV.define(CSVParser, separator: ",", escape: "\"")
 
 alias PunchyApi.{User, Truck, Operation, Repo}
 
-[truck_data_url: _truck_data_url] = Application.get_env(:punchy_api, :data)
+[truck_data_url: truck_data_url] = Application.get_env(:punchy_api, :data)
 {:ok, cwd} = File.cwd()
 truck_data_save_path = cwd <> "/priv/truck_data.csv"
 
